@@ -1,0 +1,24 @@
+#!/usr/bin/env python
+import rospy
+from std_msgs.msg import String
+from std_msgs.msg import Int32
+# from rockpaperscissors.msg import Score
+
+class Scorekeeper:
+    def __init__(self):
+        self.human_score = 0
+        self.robot_score = 0
+    def handCallback(self, human_gesture):
+        self.human_gesture = human_gesture
+    def roboCallback(self, robot_gesture):
+        self.robot_gesture = robot_gesture
+    def main(self):
+        rospy.init_node('scorekeeper')
+        rospy.Subscriber("human_gesture", String, self.handCallback)
+        rospy.Subscriber("robot_gesture", String, self.roboCallback)
+
+        rospy.spin()
+
+if __name__ == '__main__':
+    Scorekeeper = Scorekeeper()
+    Scorekeeper.main()

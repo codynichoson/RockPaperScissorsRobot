@@ -1,0 +1,2 @@
+string human_choice
+string robot_choice

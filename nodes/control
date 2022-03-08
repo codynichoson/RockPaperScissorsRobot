@@ -1,0 +1,50 @@
+#!/usr/bin/env python
+import rospy
+from std_msgs.msg import String
+import random
+from rockpaperscissors.msg import Choices
+
+class Control:
+    def __init__(self):
+        self.pickone = False
+
+    def gestureCallback(self, gesture):
+        self.human_choice = gesture.data
+        self.pickone = True
+
+    def main(self):
+        rospy.init_node('control')
+        rate = rospy.Rate(10)
+        self.robot_choice_pub = rospy.Publisher("/allegroHand_0/lib_cmd", String, queue_size=10)
+        choice_pub = rospy.Publisher("choices", Choices, queue_size=10)
+        rospy.Subscriber("human_gesture", String, self.gestureCallback)
+
+        list = ["rock", "paper", "scissors"]
+
+        rospy.sleep(1)
+        self.robot_choice_pub.publish("start")
+
+        while not rospy.is_shutdown():
+            
+
+            if self.pickone == True:
+                self.robot_choice = random.choice(list)
+                self.robot_choice_pub.publish(self.robot_choice)
+
+                choices = Choices()
+                choices.robot_choice = self.robot_choice
+                choices.human_choice = self.human_choice
+                choice_pub.publish(choices)
+
+                self.pickone = False
+                
+                rospy.sleep(1)
+
+                self.robot_choice_pub.publish("start")
+
+        rate.sleep()
+
+if __name__ == '__main__':
+    Control = Control()
+    Control.main()
+
