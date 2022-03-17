@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from anyio import current_time
 import cv2
 import rospy
 import mediapipe as mp
@@ -24,6 +25,11 @@ robot_score = 0
 
 human_choice = "none"
 robot_choice = "none"
+
+hand_delta = 0
+prev_time = 0
+prev_palm_y = 0
+
 
 def choiceCallback(choices):
     global human_score
@@ -62,6 +68,9 @@ if __name__ == '__main__':
     timer = 0
     human_decided = False
 
+    vel_arr = []
+    counter = 0
+
     with handsModule.Hands(static_image_mode=False, min_detection_confidence=0.7, min_tracking_confidence=0.7, max_num_hands=2) as hands:
 
         while (capture.isOpened()):
@@ -76,6 +85,7 @@ if __name__ == '__main__':
                 for handLandmarks in results.multi_hand_landmarks:
                     drawingModule.draw_landmarks(frame, handLandmarks, handsModule.HAND_CONNECTIONS) # Draws connecting lines between landmarks
                 
+                # Defining hand landmarks with more user-friendly names
                 palm_base = [handLandmarks.landmark[0].x, handLandmarks.landmark[0].y]
 
                 thumb_finger_tip = [handLandmarks.landmark[4].x, handLandmarks.landmark[4].y]
@@ -93,14 +103,35 @@ if __name__ == '__main__':
                 pinky_finger_tip = [handLandmarks.landmark[20].x, handLandmarks.landmark[20].y]
                 pinky_finger_knuckle = [handLandmarks.landmark[17].x, handLandmarks.landmark[17].y]
 
-                S = 0.5
-                R = 2
-
+                
+                # Some calculations that are useful for checking gestures
                 index_slope = math.atan2(index_finger_tip[1] - index_finger_knuckle[1], index_finger_tip[0] - index_finger_knuckle[0])
                 middle_slope = math.atan2(middle_finger_tip[1] - middle_finger_knuckle[1], middle_finger_tip[0] - middle_finger_knuckle[0])
                 angle = abs((middle_slope - index_slope) / (1 + index_slope * middle_slope))
                 deg = (math.atan(angle) * 180) / 3.14159
 
+                # Find hand velocity using palm_base
+                current_palm_y = palm_base[1]
+                hand_delta = current_palm_y - prev_palm_y
+                prev_palm_y = current_palm_y
+
+                current_time = rospy.get_time()
+                dt = current_time - prev_time
+                prev_time = current_time
+
+                hand_vel = hand_delta/dt
+                rospy.logerr("Y-Vel: %f", hand_vel)
+                # vel_arr.append(hand_vel)
+
+                # counter = counter + 1
+
+                # if counter == 5:
+                #     counter = 0
+                #     avg_vel = sum(vel_arr)/len(vel_arr)
+                #     rospy.logerr("Y-Vel Avg: %f", avg_vel)
+                
+
+                # Using simple line crossing to do start timer
                 if start_timer < 4:
                     if palm_base[1] > 0.6 and amcounting == True:
                         start_timer += 1
@@ -114,12 +145,17 @@ if __name__ == '__main__':
                     pause_time += 1
 
                 elif start_timer == 4 and pause_time >= 6:
-                    # check gesture for rock, paper, scissors
+                    # Check hand landmark relationships for gestures
+
+                    # Some arbitrary constants to tune gesture relationships
+                    S = 0.5
+                    R = 2
+
                     if (math.dist(index_finger_tip, index_finger_knuckle)*S > math.dist(ring_finger_tip, ring_finger_knuckle) and
                         math.dist(index_finger_tip, index_finger_knuckle)*S > math.dist(pinky_finger_tip, pinky_finger_knuckle) and
                         math.dist(middle_finger_tip, middle_finger_knuckle)*S > math.dist(ring_finger_tip, ring_finger_knuckle) and
                         math.dist(middle_finger_tip, middle_finger_knuckle)*S > math.dist(pinky_finger_tip, pinky_finger_knuckle) and
-                        deg > 20):
+                        deg > 10):
                         if gesture != "scissors":
                             gesture = "scissors"
                             pub.publish(gesture)
