@@ -1,5 +1,5 @@
-# Rock, Paper, Scissors Robot
-
+# ROCK, PAPER, SCISSORS ROBOT
+  
 <p align="center">
   <img src="https://user-images.githubusercontent.com/62906322/158316359-afae747c-502e-4fc8-93f2-b7ab63d12bdf.png" alt="Rock Paper Scissors Hand" width="700"/>
 </p>
@@ -15,6 +15,7 @@ In this solo project, I set out to create a rock, paper, scissors robotic partne
 
 ### Software
 * Robot Operating System (ROS)
+* MediaPipe Machine Learning Library
 * BHand Library (http://wiki.wonikrobotics.com/AllegroHandWiki/index.php/BHand_library)
 
 ### Software Setup (Some of this is from Wonik Robotics' website)
@@ -22,7 +23,11 @@ In this solo project, I set out to create a rock, paper, scissors robotic partne
 ```
 sudo apt-get install cmake gcc g++ libpopt-dev
 ```
-2. Download, build, and install PCAN-USB driver for Linux (http://www.peak-system.com/fileadmin/media/linux/index.htm#download)
+2. Install MediaPipe
+```
+pip install mediapipe
+```
+3. Download, build, and install PCAN-USB driver for Linux (http://www.peak-system.com/fileadmin/media/linux/index.htm#download)
 ```
 tar -xzvf peak-linux-driver-x.x.tar.gz
 cd peak-linux-driver-x.x
@@ -30,12 +35,10 @@ make NET=NO
 sudo make install
 sudo modprobe pcan
 ```
-
-3. Download this package into `catkin_ws/src` directory and run catkin_make to build and install the package:
+4. Download this package into `catkin_ws/src` directory and run catkin_make to build and install the package:
 ```
 catkin_make
 ```
-
 5. Source the `catkin_ws` by running: 
 ```
 source devel/setup.bash
@@ -53,3 +56,15 @@ roslaunch rockpaperscissors rockpaperscissors.launch
 ```
 2. A video window should open using your default camera.
 3. Hold your hand clearly in frame, and move it up and down to "countdown" in order to begin the game. You should choose a rock, paper, scissors pose when the timer hits '4'. The Allegro hand will also choose a pose, and the score will be updated accordingly.
+
+### Package
+#### Launchfiles
+`rockpaperscissors.launch`
+#### Nodes
+`perception`
+
+This node opens the default camera on your computer and uses the MediaPipe machine learning library to identify hand gestures in frame. These gestures are then used to play and score the game of rock, paper, scissors.
+
+`control`
+
+This node takes in gesture commands from the perception node after the game begins and sets the Allegro hand to a specific configuration of joint states.
