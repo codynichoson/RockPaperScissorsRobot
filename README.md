@@ -30,10 +30,26 @@ make NET=NO
 sudo make install
 sudo modprobe pcan
 ```
-3. Download this package into `catkin_ws/src` directory and run `catkin_make` to build and install.
-4. Source the `catkin_ws` by running `source devel/setup.bash`.
+
+3. Download this package into `catkin_ws/src` directory and run catkin_make to build and install the package:
+```
+catkin_make
+```
+
+5. Source the `catkin_ws` by running: 
+```
+source devel/setup.bash
+```
 
 ### Hardware Setup
 1. Plug the power/CAN connector into the Allegro hand.
 2. Plus the USB/PEAK-CAN connector into your computer.
 3. Turn the hand on using the toggle switch on the side. You should hear an audible beep and see the red light flash.
+
+### Operating Instructions
+1. To play rock, paper, scissors, run:
+```
+roslaunch rockpaperscissors rockpaperscissors.launch
+```
+2. A video window should open using your default camera.
+3. Hold your hand clearly in frame, and move it up and down to "countdown" in order to begin the game. You should choose a rock, paper, scissors pose when the timer hits '4'. The Allegro hand will also choose a pose, and the score will be updated accordingly.
