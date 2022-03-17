@@ -46,7 +46,7 @@ source devel/setup.bash
 
 ### Hardware Setup
 1. Plug the power/CAN connector into the Allegro hand.
-2. Plus the USB/PEAK-CAN connector into your computer.
+2. Plug the USB/PEAK-CAN connector into your computer.
 3. Turn the hand on using the toggle switch on the side. You should hear an audible beep and see the red light flash.
 
 ### Operating Instructions
