@@ -157,7 +157,6 @@ include_directories(
 catkin_install_python(PROGRAMS
   nodes/control
   nodes/perception
-  nodes/scorekeeper
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
