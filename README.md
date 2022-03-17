@@ -17,7 +17,7 @@ In this solo project, I set out to create a rock, paper, scissors robotic partne
 * Robot Operating System (ROS)
 * BHand Library (http://wiki.wonikrobotics.com/AllegroHandWiki/index.php/BHand_library)
 
-### Pre-Operation Checklist (Some of this is from Wonik Robotics' website)
+### Software Setup (Some of this is from Wonik Robotics' website)
 1. Install necessary packages
 ```
 sudo apt-get install cmake gcc g++ libpopt-dev
@@ -30,4 +30,10 @@ make NET=NO
 sudo make install
 sudo modprobe pcan
 ```
-3. Download, build, and install this package into the `src` directory of a `catkin_ws`
+3. Download this package into `catkin_ws/src` directory and run `catkin_make` to build and install.
+4. Source the `catkin_ws` by running `source devel/setup.bash`.
+
+### Hardware Setup
+1. Plug the power/CAN connector into the Allegro hand.
+2. Plus the USB/PEAK-CAN connector into your computer.
+3. Turn the hand on using the toggle switch on the side. You should hear an audible beep and see the red light flash.
