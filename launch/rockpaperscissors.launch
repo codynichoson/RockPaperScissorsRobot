@@ -1,10 +1,6 @@
 <launch>
 
-    <!-- <arg name="use_hand"    default="true"/> -->
-
-    <!-- <include file="$(find allegro_hand_controllers)/launch/nuallegro_hand.launch" if="$(eval arg('use_hand')=='true')"/> -->
     <include file="$(find allegro_hand_controllers)/launch/nuallegro_hand.launch"/>
-    <node name="scorekeeper" pkg="rockpaperscissors" type="scorekeeper"/>
     <node name="perception" pkg="rockpaperscissors" type="perception"/>
     <node name="control" pkg="rockpaperscissors" type="control"/>
 
