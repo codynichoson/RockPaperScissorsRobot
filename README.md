@@ -35,12 +35,23 @@ make NET=NO
 sudo make install
 sudo modprobe pcan
 ```
-4. Download this package into `catkin_ws/src` directory and run catkin_make to build and install the package:
+4. Create a `catkin_ws/src` for the necessary packages, then `cd` into the `src` directory:
 ```
+mkdir catkin_ws/src
+cd catkin_ws/src
+```
+6. Download my fork of the `allegro_hand_ros_v4` package into `catkin_ws/src` directory:
+```
+git clone git@github.com:codynichoson/allegro_hand_ros_v4.git
+```
+6. Download this package into `catkin_ws/src` directory:
+```
+git clone git@github.com:codynichoson/RockPaperScissorsRobot.git
+```
+7. Return to the base of the workspace, make, and source:
+```
+cd ..
 catkin_make
-```
-5. Source the `catkin_ws` by running: 
-```
 source devel/setup.bash
 ```
 
