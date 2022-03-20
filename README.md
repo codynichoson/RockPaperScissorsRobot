@@ -1,12 +1,13 @@
-# ROCK, PAPER, SCISSORS ROBOT
+<h1 align="center">ROCK, PAPER, SCISSORS ROBOT</h1>
+<p align="center">
+  See it on my portfolio: https://codynichoson.com/rockpaperscissors.html
+</p>
   
 <p align="center">
   <img src="https://user-images.githubusercontent.com/62906322/158316359-afae747c-502e-4fc8-93f2-b7ab63d12bdf.png" alt="Rock Paper Scissors Hand" width="700"/>
 </p>
 
-<p align="center">
 In this solo project, I set out to create a rock, paper, scissors robotic partner that would allow a user to play in a similar fashion as they would another human. Meeting this requirement meant that some creative computer vision techniques were necessary to facilitate gameplay using natural gestures. The project made use of the Wonik Allegro Robotic Hand, OpenCV computer vision library, and MediaPipe machine learning library in order to create the final result.
-</p>
 
 ### Hardware
 * Wonik Allegro Robotic Hand Version 4.0 (http://wiki.wonikrobotics.com/AllegroHandWiki/index.php/Allegro_Hand_v4.0)
